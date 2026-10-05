@@ -5,7 +5,7 @@
 [![CI](https://github.com/99proteam/css2lottie/actions/workflows/ci.yml/badge.svg)](https://github.com/99proteam/css2lottie/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/css2lottie.svg)](https://www.npmjs.com/package/css2lottie)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Sponsor](https://img.shields.io/badge/sponsor-%E2%9D%A4-ea4aaa)](https://github.com/sponsors/99proteam)
+[![Buy Me a Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-%E2%98%95-ffdd00)](https://buymeacoffee.com/99proteam)
 
 css2lottie converts CSS `@keyframes`, transitions and inline SVG into [Lottie](https://airbnb.io/lottie/) JSON (Bodymovin 5.7+). The output plays in lottie-web, lottie-ios, lottie-android and Flutter.
 
@@ -153,20 +153,13 @@ See [ROADMAP.md](ROADMAP.md) for what's next. If the converter gets something wr
 
 ## Support this project
 
-css2lottie is free, MIT-licensed and maintained in spare time. If it saves you an After Effects license or a designer round-trip, please consider [sponsoring on GitHub](https://github.com/sponsors/99proteam):
+css2lottie is free, MIT-licensed and maintained in spare time. If it saves you an After Effects license or a designer round-trip, you can support its development here:
 
-| Tier                  | Per month | You get                                                           |
-| --------------------- | --------- | ----------------------------------------------------------------- |
-| ☕ **Individual**     | $5        | Your name in the backers list below, plus our thanks              |
-| 💜 **Supporter**      | $25       | Name + link in the README, and a vote on roadmap priorities       |
-| 🏢 **Company**        | $100      | **Your company logo in this README**, with a link                 |
-| 🚀 **Company — Gold** | $500      | Large logo at the top of the README + priority on issues you file |
+<p>
+  <a href="https://buymeacoffee.com/99proteam"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-%E2%98%95-ffdd00?style=for-the-badge" alt="Buy me a coffee"></a>
+</p>
 
-<!-- sponsors -->
-
-_Your logo here — [become a sponsor](https://github.com/sponsors/99proteam)._
-
-<!-- /sponsors -->
+**[buymeacoffee.com/99proteam](https://buymeacoffee.com/99proteam)**
 
 ## Contributing
 

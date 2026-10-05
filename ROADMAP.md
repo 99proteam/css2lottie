@@ -1,6 +1,6 @@
 # Roadmap
 
-v1 covers transforms, opacity, colors, borders, border-radius, sizes, inline SVG shapes, images, text outlines and nesting (see the README). These are planned next, roughly in priority order. Sponsors get a vote on the order. Comments and PRs are welcome on any item.
+v1 covers transforms, opacity, colors, borders, border-radius, sizes, inline SVG shapes, images, text outlines and nesting (see the README). These are planned next, roughly in priority order. Comments and PRs are welcome on any item.
 
 ## Next
 
