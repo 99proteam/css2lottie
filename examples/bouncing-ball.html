@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Bouncing ball</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .stage {
+        position: relative;
+        width: 200px;
+        height: 200px;
+      }
+      .ball {
+        position: absolute;
+        left: 76px;
+        top: 24px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #f97316;
+        transform-origin: 50% 100%;
+        animation: bounce 1s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0) scale(1, 1);
+          animation-timing-function: cubic-bezier(0.33, 0, 0.66, 0);
+        }
+        50% {
+          transform: translateY(104px) scale(1.15, 0.85);
+          animation-timing-function: cubic-bezier(0.33, 1, 0.66, 1);
+        }
+      }
+      .shadow {
+        position: absolute;
+        left: 66px;
+        top: 170px;
+        width: 68px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(15, 23, 42, 0.25);
+        animation: shadow 1s infinite;
+      }
+      @keyframes shadow {
+        0%,
+        100% {
+          transform: scale(0.45);
+          opacity: 0.4;
+          animation-timing-function: cubic-bezier(0.33, 0, 0.66, 0);
+        }
+        50% {
+          transform: scale(1);
+          opacity: 1;
+          animation-timing-function: cubic-bezier(0.33, 1, 0.66, 1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="shadow"></div>
+      <div class="ball"></div>
+    </div>
+  </body>
+</html>

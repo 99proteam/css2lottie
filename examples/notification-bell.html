@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Notification bell</title>
+    <style>
+      @font-face {
+        font-family: "Instrument Sans";
+        src: url("fonts/InstrumentSans-Bold.ttf") format("truetype");
+        font-weight: 700;
+      }
+      body {
+        margin: 0;
+      }
+      .stage {
+        position: relative;
+        width: 200px;
+        height: 200px;
+      }
+      svg {
+        position: absolute;
+        left: 40px;
+        top: 40px;
+      }
+      .bell {
+        transform-box: fill-box;
+        transform-origin: 50% 0%;
+        animation: ring 2s ease-in-out infinite;
+      }
+      @keyframes ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        8% {
+          transform: rotate(16deg);
+        }
+        16% {
+          transform: rotate(-14deg);
+        }
+        24% {
+          transform: rotate(10deg);
+        }
+        32% {
+          transform: rotate(-8deg);
+        }
+        40% {
+          transform: rotate(4deg);
+        }
+        48%,
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+      .badge {
+        position: absolute;
+        left: 112px;
+        top: 36px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #ef4444;
+        border: 3px solid #ffffff;
+        box-sizing: border-box;
+        color: #fff;
+        font:
+          700 17px/28px "Instrument Sans",
+          sans-serif;
+        text-align: center;
+        animation: badge 2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+      }
+      @keyframes badge {
+        0%,
+        10% {
+          transform: scale(0);
+        }
+        30%,
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <svg width="120" height="120" viewBox="0 0 24 24">
+        <g class="bell">
+          <path
+            fill="#f59e0b"
+            d="M12 2a1.5 1.5 0 0 1 1.5 1.5v.6A6.5 6.5 0 0 1 18.5 10.5V15l2 2.5V19h-17v-1.5l2-2.5v-4.5A6.5 6.5 0 0 1 10.5 4.1v-.6A1.5 1.5 0 0 1 12 2z"
+          />
+          <circle cx="12" cy="20.5" r="2" fill="#b45309" />
+        </g>
+      </svg>
+      <div class="badge">3</div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+[
+  { "name": "spinner", "width": 200, "height": 200 },
+  { "name": "bouncing-ball", "width": 200, "height": 200 },
+  { "name": "pulse", "width": 200, "height": 200 },
+  { "name": "logo-reveal", "width": 200, "height": 200 },
+  { "name": "loading-dots", "width": 200, "height": 200 },
+  { "name": "checkmark", "width": 200, "height": 200 },
+  { "name": "card-flip", "width": 200, "height": 200 },
+  { "name": "progress-bar", "width": 200, "height": 200 },
+  { "name": "heart-beat", "width": 200, "height": 200 },
+  { "name": "notification-bell", "width": 200, "height": 200 },
+  { "name": "text-wave", "width": 320, "height": 120 }
+]

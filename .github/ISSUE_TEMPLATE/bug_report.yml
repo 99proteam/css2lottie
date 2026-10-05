@@ -1,0 +1,30 @@
+name: Bug report
+description: Crashes, wrong CLI behaviour, install problems
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Commands, code and (if relevant) the input HTML.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error output
+      render: text
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: css2lottie 0.1.0, Node 22, macOS 15
+    validations:
+      required: true

@@ -1,0 +1,71 @@
+import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { convertWithReport } from "../src/index.js";
+import { useBrowser } from "./helpers/browser.js";
+import { expectValidLottie } from "./helpers/lottie.js";
+import { pixelDiff, inkRatio, renderCss, renderLottie } from "./helpers/render.js";
+
+interface Example {
+  name: string;
+  width: number;
+  height: number;
+}
+
+const examples = JSON.parse(readFileSync("examples/examples.json", "utf8")) as Example[];
+
+/** Max fraction of differing pixels between the CSS render and lottie-web. */
+const MAX_DIFF: Record<string, number> = {
+  "card-flip": 0.08, // CSS perspective is approximated by a flat 2D flip
+  "text-wave": 0.03, // glyph rasterization (hinting) differs slightly
+};
+
+describe("examples", () => {
+  const browser = useBrowser();
+
+  it("has at least 10 examples", () => {
+    expect(examples.length).toBeGreaterThanOrEqual(10);
+  });
+
+  for (const ex of examples) {
+    it(`${ex.name}: valid Lottie, matches snapshot and the CSS render`, async () => {
+      const file = path.resolve("examples", `${ex.name}.html`);
+      const { lottie, report } = await convertWithReport({
+        file,
+        width: ex.width,
+        height: ex.height,
+        browser: browser(),
+      });
+      expectValidLottie(lottie);
+      expect(lottie.layers.length).toBeGreaterThan(0);
+      expect(report.issues.filter((i) => i.severity === "warning")).toEqual([]);
+
+      await expect(JSON.stringify({ lottie, report }, null, 1)).toMatchFileSnapshot(
+        `__snapshots__/examples/${ex.name}.json`,
+      );
+
+      const maxDiff = MAX_DIFF[ex.name] ?? 0.005;
+      for (const frac of [0, 0.23, 0.5, 0.81]) {
+        const frame = Math.round(frac * lottie.op);
+        const css = await renderCss(
+          browser(),
+          {
+            url: pathToFileURL(file).href,
+            width: ex.width,
+            height: ex.height,
+            startOffsetMs: report.stats.startOffsetMs,
+          },
+          (frame * 1000) / lottie.fr,
+        );
+        const lot = await renderLottie(browser(), lottie, frame);
+        const diff = pixelDiff(css, lot);
+        expect(
+          diff,
+          `${ex.name} frame ${frame}: ${(diff * 100).toFixed(2)}% pixels differ`,
+        ).toBeLessThanOrEqual(maxDiff);
+        if (inkRatio(css) > 0.001) expect(inkRatio(lot)).toBeGreaterThan(0.001);
+      }
+    });
+  }
+});

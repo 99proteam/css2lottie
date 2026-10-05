@@ -1,0 +1,52 @@
+name: Unsupported animation
+description: A CSS/SVG animation that doesn't convert correctly (or at all)
+title: "[unsupported] "
+labels: ["unsupported-animation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! A minimal HTML file is the fastest way to get this fixed. Please remove anything unrelated to the problem.
+  - type: textarea
+    id: html
+    attributes:
+      label: HTML
+      description: Paste the full HTML (with its <style>), or attach the .html file by dragging it into this box.
+      render: html
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Command or API call
+      placeholder: npx css2lottie input.html -o out.json --width 400 --height 400
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect, and what happened?
+      description: Screenshots or a screen recording of `--preview` help a lot.
+    validations:
+      required: true
+  - type: textarea
+    id: report
+    attributes:
+      label: Output of --report
+      render: text
+  - type: dropdown
+    id: player
+    attributes:
+      label: Where does the Lottie look wrong?
+      multiple: true
+      options:
+        - lottie-web
+        - lottie-ios
+        - lottie-android
+        - Flutter (lottie package)
+        - Other / not applicable
+  - type: input
+    id: version
+    attributes:
+      label: css2lottie version
+      placeholder: "0.1.0"

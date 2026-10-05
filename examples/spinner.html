@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Spinner</title>
+    <style>
+      body {
+        margin: 0;
+        width: 200px;
+        height: 200px;
+        display: grid;
+        place-items: center;
+      }
+      .spinner {
+        width: 72px;
+        height: 72px;
+        box-sizing: border-box;
+        border: 8px solid #e5e7eb;
+        border-top-color: #6366f1;
+        border-radius: 50%;
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="spinner"></div>
+  </body>
+</html>

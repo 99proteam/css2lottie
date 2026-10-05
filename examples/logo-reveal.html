@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Logo reveal</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      svg {
+        display: block;
+      }
+      svg * {
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .hex {
+        animation: pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      .core {
+        animation: fade-in 0.5s ease-out 0.35s both;
+      }
+      .orbit {
+        animation: spin-in 0.8s ease-out 0.5s both;
+      }
+      .bar {
+        animation: grow 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
+      }
+      @keyframes pop {
+        from {
+          transform: scale(0) rotate(-90deg);
+        }
+        to {
+          transform: scale(1) rotate(0deg);
+        }
+      }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: scale(0.6);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes spin-in {
+        from {
+          opacity: 0;
+          transform: rotate(-180deg);
+        }
+        to {
+          opacity: 1;
+          transform: rotate(0deg);
+        }
+      }
+      @keyframes grow {
+        from {
+          width: 0;
+        }
+        to {
+          width: 80px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="200" height="200" viewBox="0 0 200 200">
+      <polygon class="hex" points="100,22 156,54 156,118 100,150 44,118 44,54" fill="#0ea5e9" />
+      <circle class="core" cx="100" cy="86" r="26" fill="#ffffff" />
+      <path
+        class="orbit"
+        d="M 64 86 A 36 36 0 0 1 136 86"
+        fill="none"
+        stroke="#f8fafc"
+        stroke-width="6"
+        stroke-linecap="round"
+      />
+      <rect class="bar" x="60" y="168" width="80" height="10" rx="5" fill="#0f172a" />
+    </svg>
+  </body>
+</html>

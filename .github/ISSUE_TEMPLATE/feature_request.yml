@@ -1,0 +1,17 @@
+name: Feature request
+description: Suggest support for a new CSS property or option
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: What should css2lottie support?
+      description: Check ROADMAP.md first, and add a +1 to an existing issue if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example HTML/CSS
+      render: html

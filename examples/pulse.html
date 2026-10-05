@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Pulse</title>
+    <style>
+      body {
+        margin: 0;
+        width: 200px;
+        height: 200px;
+        display: grid;
+        place-items: center;
+      }
+      .pulse {
+        position: relative;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #ef4444;
+        animation: beat 1.5s ease-in-out infinite;
+      }
+      /* Expanding ring drawn with a pseudo-element */
+      .pulse::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: 3px solid #ef4444;
+        box-sizing: border-box;
+        animation: ring 1.5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+      }
+      @keyframes beat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.08);
+        }
+      }
+      @keyframes ring {
+        from {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        to {
+          transform: scale(2.6);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pulse"></div>
+  </body>
+</html>
