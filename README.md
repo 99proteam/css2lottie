@@ -7,6 +7,12 @@
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-%E2%98%95-ffdd00)](https://buymeacoffee.com/99proteam)
 
+**[Live demo: see every example as CSS and Lottie, side by side](https://99proteam.github.io/css2lottie/)**
+
+<p>
+  <a href="https://buymeacoffee.com/99proteam"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="260" height="73"></a>
+</p>
+
 css2lottie converts CSS `@keyframes`, transitions and inline SVG into [Lottie](https://airbnb.io/lottie/) JSON (Bodymovin 5.7+). The output plays in lottie-web, lottie-ios, lottie-android and Flutter.
 
 <!-- Recorded from examples/: left = Chromium rendering the CSS, right = lottie-web playing the generated JSON. -->
@@ -149,14 +155,14 @@ See [ROADMAP.md](ROADMAP.md) for what's next. If the converter gets something wr
 
 ## Examples
 
-[`examples/`](examples) contains 11 animations: spinner, bouncing ball, pulse, logo reveal, loading dots, checkmark, card flip, progress bar, heart beat, notification bell and text wave. Regenerate their Lottie files with `npm run build && npm run examples`. The test suite converts each one, validates it against the [Lottie JSON schema](https://lottie.github.io/lottie-spec/), checks it against a snapshot and compares lottie-web renders with the CSS renders.
+[`examples/`](examples) contains 11 animations: spinner, bouncing ball, pulse, logo reveal, loading dots, checkmark, card flip, progress bar, heart beat, notification bell and text wave. Regenerate their Lottie files with `npm run build && npm run examples`. They also play on the [live demo site](https://99proteam.github.io/css2lottie/), which `npm run build && npm run site:serve` builds and serves locally. The test suite converts each one, validates it against the [Lottie JSON schema](https://lottie.github.io/lottie-spec/), checks it against a snapshot and compares lottie-web renders with the CSS renders.
 
 ## Support this project
 
 css2lottie is free, MIT-licensed and maintained in spare time. If it saves you an After Effects license or a designer round-trip, you can support its development here:
 
 <p>
-  <a href="https://buymeacoffee.com/99proteam"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-%E2%98%95-ffdd00?style=for-the-badge" alt="Buy me a coffee"></a>
+  <a href="https://buymeacoffee.com/99proteam"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="320" height="90"></a>
 </p>
 
 **[buymeacoffee.com/99proteam](https://buymeacoffee.com/99proteam)**

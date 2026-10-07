@@ -6,6 +6,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Demo website (`site/`, built with `npm run site`, deployed to GitHub Pages). It plays every example as CSS and Lottie in sync and previews any Lottie JSON dropped into it.
+- Sponsor link in the `--preview` page.
+
+### Fixed
+
+- `.gitattributes` forces LF line endings, so `format:check` and snapshots pass on Windows checkouts.
+
 ## [0.1.0] - 2026-10-05
 
 ### Added

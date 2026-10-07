@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { convertWithReport } from "../src/index.js";
@@ -21,6 +21,42 @@ const MAX_DIFF: Record<string, number> = {
   "text-wave": 0.03, // glyph rasterization (hinting) differs slightly
 };
 
+/**
+ * Snapshots are recorded on Linux, as in CI. Other platforms shape text with sub-pixel
+ * differences (DirectWrite/CoreText vs FreeType), so there the output has to match the
+ * snapshot's structure exactly and its numbers within SNAPSHOT_TOLERANCE.
+ */
+const EXACT_SNAPSHOTS = process.platform === "linux";
+const SNAPSHOT_TOLERANCE = 1;
+
+/** Paths where `actual` differs from `expected` beyond SNAPSHOT_TOLERANCE. */
+function snapshotMismatches(actual: unknown, expected: unknown, at = ""): string[] {
+  if (typeof actual === "number" && typeof expected === "number") {
+    return Math.abs(actual - expected) <= SNAPSHOT_TOLERANCE
+      ? []
+      : [`${at}: ${actual} vs ${expected}`];
+  }
+  if (Array.isArray(expected)) {
+    if (!Array.isArray(actual) || actual.length !== expected.length)
+      return [`${at}: array of ${(actual as unknown[])?.length} vs ${expected.length}`];
+    return expected.flatMap((e, i) => snapshotMismatches(actual[i], e, `${at}/${i}`));
+  }
+  if (expected && typeof expected === "object") {
+    if (!actual || typeof actual !== "object") return [`${at}: not an object`];
+    const keys = new Set([...Object.keys(actual), ...Object.keys(expected)]);
+    return [...keys].flatMap((k) =>
+      snapshotMismatches(
+        (actual as Record<string, unknown>)[k],
+        (expected as Record<string, unknown>)[k],
+        `${at}/${k}`,
+      ),
+    );
+  }
+  return actual === expected
+    ? []
+    : [`${at}: ${JSON.stringify(actual)} vs ${JSON.stringify(expected)}`];
+}
+
 describe("examples", () => {
   const browser = useBrowser();
 
@@ -41,9 +77,16 @@ describe("examples", () => {
       expect(lottie.layers.length).toBeGreaterThan(0);
       expect(report.issues.filter((i) => i.severity === "warning")).toEqual([]);
 
-      await expect(JSON.stringify({ lottie, report }, null, 1)).toMatchFileSnapshot(
-        `__snapshots__/examples/${ex.name}.json`,
-      );
+      const snapshot = JSON.stringify({ lottie, report }, null, 1);
+      const snapshotFile = `__snapshots__/examples/${ex.name}.json`;
+      if (EXACT_SNAPSHOTS || !existsSync(path.resolve("test", snapshotFile))) {
+        await expect(snapshot).toMatchFileSnapshot(snapshotFile);
+      } else {
+        const recorded: unknown = JSON.parse(
+          readFileSync(path.resolve("test", snapshotFile), "utf8"),
+        );
+        expect(snapshotMismatches(JSON.parse(snapshot), recorded).slice(0, 10)).toEqual([]);
+      }
 
       const maxDiff = MAX_DIFF[ex.name] ?? 0.005;
       for (const frac of [0, 0.23, 0.5, 0.81]) {

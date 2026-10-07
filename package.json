@@ -1,20 +1,34 @@
 {
   "name": "css2lottie",
   "version": "0.1.0",
-  "description": "Convert HTML + CSS animations (@keyframes, transitions) and inline SVG into Lottie JSON \u2014 no After Effects required.",
+  "description": "Convert HTML + CSS animations (@keyframes, transitions) and inline SVG into Lottie JSON. CSS to Lottie converter, no After Effects required.",
   "keywords": [
     "lottie",
+    "css-to-lottie",
+    "html-to-lottie",
+    "svg-to-lottie",
+    "lottie-converter",
+    "lottie-generator",
+    "lottie-json",
     "bodymovin",
     "css",
+    "css-animation",
     "animation",
     "keyframes",
+    "transitions",
     "svg",
+    "svg-animation",
+    "web-animations",
     "converter",
     "after-effects",
+    "after-effects-alternative",
     "lottie-web",
+    "lottiefiles",
+    "motion-design",
+    "cli",
     "playwright"
   ],
-  "homepage": "https://github.com/99proteam/css2lottie#readme",
+  "homepage": "https://99proteam.github.io/css2lottie/",
   "bugs": {
     "url": "https://github.com/99proteam/css2lottie/issues"
   },
@@ -67,7 +81,9 @@
     "test:watch": "vitest",
     "test:update": "vitest run -u",
     "examples": "node scripts/build-examples.mjs",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "site": "node scripts/build-site.mjs",
+    "site:serve": "node scripts/build-site.mjs --serve"
   },
   "dependencies": {
     "lottie-web": "^5.13.0",

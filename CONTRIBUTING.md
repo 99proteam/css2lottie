@@ -96,7 +96,7 @@ Tips:
 
 - Run `npm run lint && npm run typecheck && npm test` before pushing. CI runs the same.
 - Keep PRs focused: one property or fix per PR is ideal.
-- Update snapshots only when the output change is intended, and say why in the PR.
+- Update snapshots only when the output change is intended, and say why in the PR. Example snapshots are recorded on Linux (as in CI). On Windows and macOS, text is shaped with sub-pixel differences, so `npm test` there compares them with a 1px tolerance and `test:update` should be run on Linux (or WSL).
 
 ## Releases (maintainers)
 

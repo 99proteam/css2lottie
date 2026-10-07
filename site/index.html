@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>css2lottie: CSS to Lottie Converter for HTML &amp; SVG Animations</title>
+    <meta
+      name="description"
+      content="Free open-source CSS to Lottie converter. Turn HTML + CSS @keyframes, transitions and SVG into Lottie JSON for web, iOS, Android &amp; Flutter. No After Effects."
+    />
+    <meta
+      name="keywords"
+      content="css to lottie, html to lottie, svg to lottie, css animation to lottie, lottie converter, lottie generator, convert css animation to json, keyframes to lottie, bodymovin, lottie json, lottie-web, lottie without after effects, after effects alternative, css2lottie, npm lottie, animation converter, web animation, motion design"
+    />
+    <meta name="author" content="99proteam" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="canonical" href="__SITE_URL__" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="css2lottie" />
+    <meta property="og:url" content="__SITE_URL__" />
+    <meta property="og:title" content="css2lottie: convert CSS animations to Lottie JSON" />
+    <meta
+      property="og:description"
+      content="Write animations in HTML + CSS and get a Lottie file. Runs locally, keeps real easing, no After Effects needed."
+    />
+    <meta property="og:image" content="__SITE_URL__side-by-side.gif" />
+    <meta
+      property="og:image:alt"
+      content="A CSS animation and the generated Lottie, side by side"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="css2lottie: convert CSS animations to Lottie JSON" />
+    <meta
+      name="twitter:description"
+      content="Write animations in HTML + CSS and get a Lottie file. Open source, runs locally, no After Effects."
+    />
+    <meta name="twitter:image" content="__SITE_URL__side-by-side.gif" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "css2lottie",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Windows, macOS, Linux (Node.js 18.17+)",
+        "softwareVersion": "__VERSION__",
+        "description": "Open-source converter from HTML + CSS animations (@keyframes, transitions) and inline SVG to Lottie JSON.",
+        "url": "__SITE_URL__",
+        "downloadUrl": "https://www.npmjs.com/package/css2lottie",
+        "codeRepository": "https://github.com/99proteam/css2lottie",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I convert a CSS animation to Lottie?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Install the css2lottie npm package and run: npx css2lottie animation.html -o animation.json. It reads your @keyframes, transitions and inline SVG in a headless Chromium and writes Lottie JSON."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need After Effects to make a Lottie file?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. css2lottie builds Lottie JSON (Bodymovin 5.7+) straight from HTML and CSS, so you can make Lottie animations without After Effects."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where does the generated Lottie play?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The output plays in lottie-web, lottie-ios, lottie-android, React Native and Flutter."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I convert my own animation on this website?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Conversion needs a real browser engine, so it runs on your machine through the npm package or the CLI. This website plays the converted examples and previews any Lottie JSON file you drop in, directly in your browser."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <nav class="top">
+      <div class="wrap">
+        <a class="brand" href="#top" aria-label="css2lottie home"
+          ><img src="favicon.svg" alt="" width="26" height="26" /> css2lottie</a
+        >
+        <div class="links">
+          <a href="#examples">Examples</a>
+          <a href="#viewer">Lottie viewer</a>
+          <a href="#install">Install</a>
+          <a href="https://github.com/99proteam/css2lottie" target="_blank" rel="noopener"
+            >GitHub</a
+          >
+          <a
+            class="btn coffee small"
+            href="https://buymeacoffee.com/99proteam"
+            target="_blank"
+            rel="noopener"
+            >☕ Sponsor</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="wrap">
+        <p class="eyebrow">Free · Open source · MIT · v__VERSION__</p>
+        <h1>CSS to Lottie converter</h1>
+        <p class="lede">
+          Write animations in <strong>HTML + CSS</strong>, get a <strong>Lottie JSON</strong> file.
+          css2lottie converts <code>@keyframes</code>, transitions and inline SVG into Lottie that
+          plays on the web, iOS, Android and Flutter. No After Effects needed.
+        </p>
+        <div class="cmd" role="group" aria-label="Quick start command">
+          <code id="quick-cmd">npx css2lottie spinner.html -o spinner.json</code>
+          <button type="button" class="copy" data-copy="#quick-cmd">Copy</button>
+        </div>
+        <div class="cta">
+          <a class="btn primary" href="#examples">See live examples</a>
+          <a
+            class="btn"
+            href="https://www.npmjs.com/package/css2lottie"
+            target="_blank"
+            rel="noopener"
+            >npm package</a
+          >
+          <a
+            class="btn"
+            href="https://github.com/99proteam/css2lottie"
+            target="_blank"
+            rel="noopener"
+            >★ Star on GitHub</a
+          >
+        </div>
+        <a
+          class="coffee-hero"
+          href="https://buymeacoffee.com/99proteam"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="cup" aria-hidden="true">☕</span>
+          <span><strong>Buy me a coffee</strong><small>Support css2lottie development</small></span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="features wrap" aria-label="Why css2lottie">
+        <div>
+          <h2>Runs locally</h2>
+          <p>
+            No server, no account and no upload. A headless Chromium on your machine reads the
+            animation.
+          </p>
+        </div>
+        <div>
+          <h2>Matches the browser</h2>
+          <p>
+            Values come from the browser's own animation engine via the Web Animations API, frame by
+            frame.
+          </p>
+        </div>
+        <div>
+          <h2>Keeps real easing</h2>
+          <p>
+            <code>ease</code>, <code>ease-in-out</code> and <code>cubic-bezier()</code> become one
+            Lottie keyframe with matching bezier handles, not 60 keys a second.
+          </p>
+        </div>
+        <div>
+          <h2>Tells you what it dropped</h2>
+          <p>
+            A report lists every unsupported or approximated feature, such as
+            <code>box-shadow</code>, filters or gradients.
+          </p>
+        </div>
+      </section>
+
+      <section id="examples" class="wrap">
+        <h2 class="section-title">Live examples: CSS (left) vs Lottie (right)</h2>
+        <p class="section-lede">
+          All __EXAMPLE_COUNT__ animations below were converted by css2lottie v__VERSION__ when this
+          site was built. The left side is your browser playing the original CSS; the right side is
+          lottie-web playing the generated JSON. Drag a slider to compare both on the same frame.
+        </p>
+        <div class="gallery">
+          <!-- GALLERY -->
+        </div>
+      </section>
+
+      <section id="viewer" class="wrap">
+        <h2 class="section-title">Preview any Lottie file</h2>
+        <p class="section-lede">
+          Drop a <code>.json</code> Lottie here, such as one you just made with css2lottie, to play
+          it with lottie-web. The file stays in your browser and is never uploaded.
+        </p>
+        <div class="viewer">
+          <label class="drop" id="drop">
+            <input type="file" id="file" accept=".json,application/json" />
+            <span><strong>Choose a Lottie JSON file</strong> or drag it here</span>
+          </label>
+          <div class="viewer-out" id="viewer-out" hidden>
+            <div class="viewer-stage" id="viewer-stage"></div>
+            <div class="controls">
+              <button type="button" id="viewer-play">Pause</button>
+              <input
+                type="range"
+                id="viewer-scrub"
+                min="0"
+                max="0"
+                step="1"
+                value="0"
+                aria-label="Frame"
+              />
+              <span class="frame-no" id="viewer-frame"></span>
+            </div>
+            <p class="meta" id="viewer-meta"></p>
+          </div>
+          <p class="error" id="viewer-error" role="alert" hidden></p>
+        </div>
+      </section>
+
+      <section id="install" class="wrap">
+        <h2 class="section-title">Convert your own animation</h2>
+        <p class="section-lede">
+          Conversion needs a real browser engine, so it runs on your computer through the npm
+          package. Requires Node.js 18.17 or newer.
+        </p>
+        <div class="steps">
+          <div>
+            <h3>1. Install</h3>
+            <div class="cmd">
+              <code id="cmd-install">npm install --save-dev css2lottie</code>
+              <button type="button" class="copy" data-copy="#cmd-install">Copy</button>
+            </div>
+            <div class="cmd">
+              <code id="cmd-browser">npx css2lottie install-browser</code>
+              <button type="button" class="copy" data-copy="#cmd-browser">Copy</button>
+            </div>
+          </div>
+          <div>
+            <h3>2. Convert</h3>
+            <div class="cmd">
+              <code id="cmd-convert">npx css2lottie input.html -o output.json --report</code>
+              <button type="button" class="copy" data-copy="#cmd-convert">Copy</button>
+            </div>
+          </div>
+          <div>
+            <h3>3. Compare</h3>
+            <div class="cmd">
+              <code id="cmd-preview">npx css2lottie input.html --preview</code>
+              <button type="button" class="copy" data-copy="#cmd-preview">Copy</button>
+            </div>
+            <p class="hint">
+              Opens a local page with the CSS and the Lottie side by side and a shared frame
+              scrubber.
+            </p>
+          </div>
+        </div>
+        <h3>Or use the API</h3>
+        <pre><code>import { convertWithReport, formatReport } from "css2lottie";
+
+const { lottie, report } = await convertWithReport({
+  file: "./animations/logo.html",
+  width: 400,
+  height: 400,
+});
+console.log(formatReport(report));</code></pre>
+      </section>
+
+      <section class="sponsor wrap" id="sponsor">
+        <h2>Keep css2lottie free</h2>
+        <p>
+          css2lottie is MIT-licensed and maintained in spare time. If it saves you an After Effects
+          license or a designer round-trip, a coffee helps keep new CSS features coming.
+        </p>
+        <a
+          class="coffee-big"
+          href="https://buymeacoffee.com/99proteam"
+          target="_blank"
+          rel="noopener"
+        >
+          <span aria-hidden="true">☕</span> Buy me a coffee
+        </a>
+        <p class="sponsor-url">
+          <a href="https://buymeacoffee.com/99proteam" target="_blank" rel="noopener"
+            >buymeacoffee.com/99proteam</a
+          >
+        </p>
+      </section>
+
+      <section class="faq wrap" aria-labelledby="faq-title">
+        <h2 class="section-title" id="faq-title">FAQ</h2>
+        <details>
+          <summary>How do I convert a CSS animation to Lottie?</summary>
+          <p>
+            Run <code>npx css2lottie animation.html -o animation.json</code>. It loads the page in
+            headless Chromium, reads every CSS animation, transition and
+            <code>element.animate()</code> call, and writes Lottie JSON (Bodymovin 5.7+).
+          </p>
+        </details>
+        <details>
+          <summary>Do I need After Effects?</summary>
+          <p>No. css2lottie builds the Lottie file straight from HTML and CSS.</p>
+        </details>
+        <details>
+          <summary>Where does the output play?</summary>
+          <p>
+            In lottie-web, lottie-ios, lottie-android, React Native and Flutter, and on LottieFiles.
+          </p>
+        </details>
+        <details>
+          <summary>Can I convert my own animation on this website?</summary>
+          <p>
+            Not yet. Conversion needs a real browser engine, so it runs on your machine through the
+            npm package or the CLI. This site plays the converted examples and previews any Lottie
+            file you drop into the <a href="#viewer">viewer</a>.
+          </p>
+        </details>
+        <details>
+          <summary>What CSS isn't supported yet?</summary>
+          <p>
+            <code>box-shadow</code>, filters, gradients, <code>clip-path</code>/masks,
+            <code>stroke-dasharray</code> and JavaScript-driven animation. The
+            <code>--report</code> flag lists everything that was dropped or approximated. See the
+            <a
+              href="https://github.com/99proteam/css2lottie/blob/HEAD/ROADMAP.md"
+              target="_blank"
+              rel="noopener"
+              >roadmap</a
+            >.
+          </p>
+        </details>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>
+          css2lottie v__VERSION__ · MIT License ·
+          <a href="https://github.com/99proteam/css2lottie" target="_blank" rel="noopener"
+            >GitHub</a
+          >
+          ·
+          <a href="https://www.npmjs.com/package/css2lottie" target="_blank" rel="noopener">npm</a>
+          ·
+          <a href="https://github.com/99proteam/css2lottie/issues" target="_blank" rel="noopener"
+            >Report an issue</a
+          >
+        </p>
+        <a
+          class="btn coffee"
+          href="https://buymeacoffee.com/99proteam"
+          target="_blank"
+          rel="noopener"
+          >☕ Buy me a coffee</a
+        >
+      </div>
+    </footer>
+
+    <script src="vendor/lottie_svg.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

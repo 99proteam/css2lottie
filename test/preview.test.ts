@@ -30,6 +30,7 @@ describe("preview", () => {
     expect(html).toContain('src="/source/a.html"');
     expect(html).toContain("HTML + CSS (original)");
     expect(html).toContain("Lottie (lottie-web)");
+    expect(html).toContain('href="https://buymeacoffee.com/99proteam"');
   });
 
   it("serves the CSS original and the Lottie side by side", async () => {
