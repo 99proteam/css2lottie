@@ -177,6 +177,8 @@ See [ROADMAP.md](ROADMAP.md) for what's next. If the converter gets something wr
 
 ## Support this project
 
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/99proteam?label=sponsors&logo=githubsponsors&logoColor=white&color=db61a2)](https://github.com/sponsors/99proteam) **Goal: $5,000/month** · [see live progress](https://github.com/sponsors/99proteam)
+
 css2lottie is free and MIT-licensed. If it saves you an After Effects license or a designer round-trip, please become a sponsor on GitHub. Our goal is **$5,000 a month** so css2lottie can be maintained full time and ship gradients, masks and path drawing sooner.
 
 <p>

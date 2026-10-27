@@ -1,6 +1,6 @@
 {
   "name": "css2lottie",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Convert HTML + CSS animations (@keyframes, transitions) and inline SVG into Lottie JSON. CSS to Lottie converter, no After Effects required.",
   "keywords": [
     "lottie",

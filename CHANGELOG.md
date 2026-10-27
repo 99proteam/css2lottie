@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-27
+
 ### Added
 
 - dotLottie output: `-o animation.lottie` (or `toDotLottie()` in the API) writes a `.lottie` archive with a manifest; embedded images are stored as files instead of base64.
