@@ -5,12 +5,13 @@
 [![CI](https://github.com/99proteam/css2lottie/actions/workflows/ci.yml/badge.svg)](https://github.com/99proteam/css2lottie/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/css2lottie.svg)](https://www.npmjs.com/package/css2lottie)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Sponsor on GitHub](https://img.shields.io/badge/sponsor-%E2%9D%A4-db61a2?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/99proteam)
 [![Buy Me a Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-%E2%98%95-ffdd00)](https://buymeacoffee.com/99proteam)
 
 **[Live demo: see every example as CSS and Lottie, side by side](https://99proteam.github.io/css2lottie/)**
 
 <p>
-  <a href="https://buymeacoffee.com/99proteam"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="260" height="73"></a>
+  <a href="https://github.com/sponsors/99proteam"><img src="https://img.shields.io/badge/%F0%9F%92%96_Sponsor_on_GitHub-Goal_$5k%2Fmonth-db61a2?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0d1117" alt="Sponsor css2lottie on GitHub" height="40"></a>
 </p>
 
 css2lottie converts CSS `@keyframes`, transitions and inline SVG into [Lottie](https://airbnb.io/lottie/) JSON (Bodymovin 5.7+). The output plays in lottie-web, lottie-ios, lottie-android and Flutter.
@@ -44,21 +45,22 @@ Requires Node.js 18.17+. If you already have Chrome/Chromium, you can skip `inst
 npx css2lottie input.html -o output.json --width 400 --height 400 --fps 60
 ```
 
-| Flag                       | Description                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| `-o, --output <file>`      | Output file (default `<input>.json`, `-` for stdout)                                  |
-| `--width`, `--height`      | Composition size in px (default: the root element's size with `--selector`, else 512) |
-| `--fps <n>`                | Frame rate (default 60)                                                               |
-| `-d, --duration <ms\|s>`   | Duration (default: auto-detected from the longest animation; one loop for `infinite`) |
-| `-s, --selector <css>`     | Convert only this root element (centered in the composition)                          |
-| `--report`                 | Print unsupported / approximated features                                             |
-| `--report-json <file>`     | Write the report as JSON                                                              |
-| `--preview`                | Open a local page that plays the CSS original and the Lottie side by side             |
-| `--no-optimize`            | Disable easing optimization (per-frame keys, simplified)                              |
-| `--font <family=file>`     | Font file used to convert text to outlines (repeatable)                               |
-| `--background`             | Include the page background color as a layer                                          |
-| `--pretty`                 | Pretty-print the JSON                                                                 |
-| `--executable-path <path>` | Chromium/Chrome binary to use                                                         |
+| Flag                       | Description                                                                             |
+| -------------------------- | --------------------------------------------------------------------------------------- |
+| `-o, --output <file>`      | Output file (default `<input>.json`, `-` for stdout). A `.lottie` name writes dotLottie |
+| `--width`, `--height`      | Composition size in px (default: the root element's size with `--selector`, else 512)   |
+| `--fps <n>`                | Frame rate (default 60)                                                                 |
+| `-d, --duration <ms\|s>`   | Duration (default: auto-detected from the longest animation; one loop for `infinite`)   |
+| `-s, --selector <css>`     | Convert only this root element (centered in the composition)                            |
+| `--report`                 | Print unsupported / approximated features                                               |
+| `--report-json <file>`     | Write the report as JSON                                                                |
+| `--preview`                | Open a local page that plays the CSS original and the Lottie side by side               |
+| `-w, --watch`              | Re-convert on every save; with `--preview` the page reloads by itself                   |
+| `--no-optimize`            | Disable easing optimization (per-frame keys, simplified)                                |
+| `--font <family=file>`     | Font file used to convert text to outlines (repeatable)                                 |
+| `--background`             | Include the page background color as a layer                                            |
+| `--pretty`                 | Pretty-print the JSON                                                                   |
+| `--executable-path <path>` | Chromium/Chrome binary to use                                                           |
 
 `--preview` starts a small local server and opens a comparison page. It has a shared scrubber, so you can step both versions to the same frame.
 
@@ -108,6 +110,22 @@ const browser = await launchBrowser();
 for (const file of files) await convert({ file, browser });
 await browser.close();
 ```
+
+Write a [dotLottie](https://dotlottie.io/) (`.lottie`) file instead of JSON. It is a zip that the LottieFiles players and the mobile runtimes load directly; embedded images are stored as files, so it is usually much smaller:
+
+```ts
+import { writeFile } from "node:fs/promises";
+import { convert, toDotLottie } from "css2lottie";
+
+const lottie = await convert({ file: "./spinner.html" });
+await writeFile("spinner.lottie", toDotLottie(lottie, { id: "spinner", loop: true }));
+```
+
+From the CLI, just pick a `.lottie` output name: `npx css2lottie spinner.html -o spinner.lottie`.
+
+### Watch mode
+
+`npx css2lottie anim.html --watch --preview` converts on every save (of the HTML or any CSS, image or font next to it) and reloads the side-by-side preview, so you can tweak keyframes and see the Lottie update right away.
 
 ## Supported features (v1)
 
@@ -159,13 +177,13 @@ See [ROADMAP.md](ROADMAP.md) for what's next. If the converter gets something wr
 
 ## Support this project
 
-css2lottie is free, MIT-licensed and maintained in spare time. If it saves you an After Effects license or a designer round-trip, you can support its development here:
+css2lottie is free and MIT-licensed. If it saves you an After Effects license or a designer round-trip, please become a sponsor on GitHub. Our goal is **$5,000 a month** so css2lottie can be maintained full time and ship gradients, masks and path drawing sooner.
 
 <p>
-  <a href="https://buymeacoffee.com/99proteam"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="320" height="90"></a>
+  <a href="https://github.com/sponsors/99proteam"><img src="https://img.shields.io/badge/%F0%9F%92%96_Sponsor_on_GitHub-Goal_$5k%2Fmonth-db61a2?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=0d1117" alt="Sponsor css2lottie on GitHub" height="48"></a>
 </p>
 
-**[buymeacoffee.com/99proteam](https://buymeacoffee.com/99proteam)**
+**[github.com/sponsors/99proteam](https://github.com/sponsors/99proteam)** (monthly or one-time) · One-off coffees are welcome too: [buymeacoffee.com/99proteam](https://buymeacoffee.com/99proteam)
 
 ## Contributing
 

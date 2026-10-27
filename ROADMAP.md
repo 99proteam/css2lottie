@@ -19,5 +19,5 @@ v1 covers transforms, opacity, colors, borders, border-radius, sizes, inline SVG
 - [ ] `filter: blur()` / `drop-shadow()` via Lottie effects (lottie-web only)
 - [ ] SVG `<text>`, `<use>`, `<image>`, nested `<svg>`
 - [ ] Path morphing between `d` values with different point counts (point resampling)
-- [ ] `.lottie` (dotLottie) output
-- [ ] Watch mode (`--watch`) that regenerates on save and live-reloads the preview
+- [x] `.lottie` (dotLottie) output
+- [x] Watch mode (`--watch`) that regenerates on save and live-reloads the preview

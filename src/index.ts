@@ -8,6 +8,7 @@ export {
 } from "./report.js";
 export { createPreviewHtml, startPreviewServer, type PreviewOptions } from "./preview/preview.js";
 export { launchBrowser, BrowserNotFoundError } from "./sampler/browser.js";
+export { toDotLottie, isDotLottiePath, type DotLottieOptions } from "./dotlottie.js";
 export type * from "./lottie/types.js";
 export { VERSION } from "./version.js";
 

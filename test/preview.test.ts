@@ -30,7 +30,7 @@ describe("preview", () => {
     expect(html).toContain('src="/source/a.html"');
     expect(html).toContain("HTML + CSS (original)");
     expect(html).toContain("Lottie (lottie-web)");
-    expect(html).toContain('href="https://buymeacoffee.com/99proteam"');
+    expect(html).toContain('href="https://github.com/sponsors/99proteam"');
   });
 
   it("serves the CSS original and the Lottie side by side", async () => {
@@ -60,6 +60,8 @@ describe("preview", () => {
       page.on("pageerror", (e) => errors.push(e.message));
       await page.goto(server.url);
       await page.waitForFunction(() => document.querySelectorAll("#lottie svg").length === 1);
+      // Both panes restart together once loaded; scrub only after that so it isn't overwritten.
+      await page.waitForSelector("body[data-ready]");
       const cssAnimations = await page.evaluate(
         () =>
           (document.getElementById("source") as HTMLIFrameElement).contentDocument!.getAnimations()

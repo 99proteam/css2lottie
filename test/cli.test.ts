@@ -72,6 +72,50 @@ describe("cli", () => {
     expect(report.issues.some((i: { feature: string }) => i.feature === "box-shadow")).toBe(true);
   });
 
+  it("writes a dotLottie archive for .lottie outputs", async () => {
+    const output = path.join(dir, "anim.lottie");
+    const r = io();
+    expect(await main([input, "-o", output], r.io)).toBe(0);
+    const bytes = readFileSync(output);
+    expect(bytes.subarray(0, 4)).toEqual(Buffer.from([0x50, 0x4b, 0x03, 0x04]));
+    expect(bytes.includes(Buffer.from("manifest.json"))).toBe(true);
+    expect(bytes.includes(Buffer.from("animations/anim.json"))).toBe(true);
+    expect(r.out.stderr).toContain("anim.lottie");
+  });
+
+  it("re-converts on change with --watch and live-reloads the preview", async () => {
+    const output = path.join(dir, "watched.json");
+    const controller = new AbortController();
+    const r = io();
+    const done = main([input, "-o", output, "--watch", "--preview", "--no-open"], {
+      ...r.io,
+      signal: controller.signal,
+    });
+    const until = async (check: () => boolean) => {
+      for (let i = 0; i < 200 && !check(); i++) await new Promise((res) => setTimeout(res, 100));
+      expect(check()).toBe(true);
+    };
+    await until(() => r.out.stderr.includes("Watching"));
+    const url = /Preview: (\S+)/.exec(r.out.stderr)![1]!;
+    expect(await fetch(url + "version").then((res) => res.text())).toBe("0");
+    expect(await fetch(url).then((res) => res.text())).toContain('"liveReloadUrl":"/version"');
+    expect(JSON.parse(readFileSync(output, "utf8")).w).toBe(512);
+
+    const original = readFileSync(input, "utf8");
+    writeFileSync(input, original + "<!-- changed -->");
+    // A second "✔ watched.json" line means the change was picked up and converted.
+    await until(() => r.out.stderr.split("watched.json").length > 2);
+    expect(Number(await fetch(url + "version").then((res) => res.text()))).toBeGreaterThan(0);
+
+    controller.abort();
+    expect(await done).toBe(0);
+    writeFileSync(input, original);
+  });
+
+  it("rejects --watch for URLs", async () => {
+    await expect(main(["https://example.com", "--watch"], io().io)).rejects.toThrow(/--watch/);
+  });
+
   it("fails on bad input", async () => {
     await expect(main([path.join(dir, "missing.html")], io().io)).rejects.toThrow(/not found/);
     await expect(main([input, "--fps", "abc"], io().io)).rejects.toThrow(/--fps/);

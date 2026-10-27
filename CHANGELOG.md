@@ -8,8 +8,10 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- dotLottie output: `-o animation.lottie` (or `toDotLottie()` in the API) writes a `.lottie` archive with a manifest; embedded images are stored as files instead of base64.
+- `--watch` mode: re-converts when the input or files next to it change, reusing one browser. With `--preview`, the page reloads automatically.
 - Demo website (`site/`, built with `npm run site`, deployed to GitHub Pages). It plays every example as CSS and Lottie in sync and previews any Lottie JSON dropped into it.
-- Sponsor link in the `--preview` page.
+- GitHub Sponsors link in the `--preview` page, README and site (goal: $5,000/month).
 
 ### Fixed
 

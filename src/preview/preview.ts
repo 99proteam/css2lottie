@@ -22,6 +22,8 @@ export interface PreviewOptions {
   animationUrl: string;
   report?: ConversionReport;
   title?: string;
+  /** When set, the page polls this URL and reloads when the returned version changes (--watch). */
+  liveReloadUrl?: string;
 }
 
 function escapeHtml(s: string): string {
@@ -51,6 +53,7 @@ export function createPreviewHtml(opts: PreviewOptions): string {
     h: lottie.h,
     startOffset: opts.startOffsetMs ?? 0,
     animationUrl: opts.animationUrl,
+    liveReloadUrl: opts.liveReloadUrl ?? null,
   });
   return `<!doctype html>
 <html lang="en">
@@ -68,8 +71,8 @@ export function createPreviewHtml(opts: PreviewOptions): string {
   header { padding: 16px 20px; display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
   header h1 { font-size: 18px; margin: 0; }
   header span { color: var(--muted); }
-  header .coffee { margin-left: auto; align-self: center; display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; background: #ffdd00; color: #1a1a1a; border: 2px solid #1a1a1a; font-size: 17px; font-weight: 700; text-decoration: none; }
-  header .coffee:hover { background: #ffe633; }
+  header .sponsor { margin-left: auto; align-self: center; display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; background: #bf3989; color: #fff; border: 2px solid #8f2a67; font-size: 17px; font-weight: 700; text-decoration: none; }
+  header .sponsor:hover { background: #a52f75; }
   main { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; padding: 0 20px; }
   .pane { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .pane h2 { margin: 0; font-size: 13px; font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
@@ -92,7 +95,7 @@ export function createPreviewHtml(opts: PreviewOptions): string {
 </style>
 </head>
 <body>
-<header><h1>${title}</h1><span>${lottie.w}×${lottie.h} · ${lottie.fr} fps · ${lottie.op} frames · ${lottie.layers.length} layers</span><a class="coffee" href="https://buymeacoffee.com/99proteam" target="_blank" rel="noopener">☕ Buy me a coffee</a></header>
+<header><h1>${title}</h1><span>${lottie.w}×${lottie.h} · ${lottie.fr} fps · ${lottie.op} frames · ${lottie.layers.length} layers</span><a class="sponsor" href="https://github.com/sponsors/99proteam" target="_blank" rel="noopener">💖 Sponsor on GitHub</a></header>
 <main>
   <div class="pane"><h2>HTML + CSS (original)</h2><div class="stage"><div class="frame" id="cssFrame"><iframe id="source" src="${escapeHtml(opts.sourceUrl)}" width="${viewport.width}" height="${viewport.height}" title="Original"></iframe></div></div></div>
   <div class="pane"><h2>Lottie (lottie-web)</h2><div class="stage"><div class="frame" id="lottieFrame"><div id="lottie"></div></div></div></div>
@@ -127,7 +130,7 @@ export function createPreviewHtml(opts: PreviewOptions): string {
   }
   function restart() { seekCss(0, true); anim.goToAndPlay(0, true); playing = true; document.getElementById("play").textContent = "Pause"; }
   var ready = 0;
-  function onReady() { if (++ready === 2) restart(); }
+  function onReady() { if (++ready === 2) { restart(); document.body.dataset.ready = "1"; } }
   anim.addEventListener("DOMLoaded", onReady);
   iframe.addEventListener("load", function () { setTimeout(onReady, 50); });
   anim.addEventListener("loopComplete", function () { if (playing) seekCss(0, true); });
@@ -149,6 +152,15 @@ export function createPreviewHtml(opts: PreviewOptions): string {
     anim.goToAndStop(f, true); seekCss(f, false);
     document.getElementById("frame").textContent = "frame " + f + " / " + cfg.op;
   };
+  if (cfg.liveReloadUrl) {
+    var version = null;
+    setInterval(function () {
+      fetch(cfg.liveReloadUrl, { cache: "no-store" }).then(function (r) { return r.text(); }).then(function (v) {
+        if (version !== null && v !== version) location.reload();
+        version = v;
+      }).catch(function () {});
+    }, 700);
+  }
 })();
 </script>
 </body>
@@ -167,10 +179,21 @@ export interface PreviewServerOptions {
   port?: number;
   /** Open the default browser (default true) */
   open?: boolean;
+  /** Reload open preview pages whenever `update()` is called (used by --watch). */
+  liveReload?: boolean;
+}
+
+export interface PreviewUpdate {
+  lottie: LottieAnimation;
+  report?: ConversionReport;
+  viewport?: { width: number; height: number };
+  startOffsetMs?: number;
 }
 
 export interface PreviewServer {
   url: string;
+  /** Swap in a new conversion result; live-reloading pages refresh themselves. */
+  update(next: PreviewUpdate): void;
   close(): Promise<void>;
 }
 
@@ -196,16 +219,24 @@ export function openInBrowser(url: string): void {
 export async function startPreviewServer(opts: PreviewServerOptions): Promise<PreviewServer> {
   const sourceDir = opts.file ? path.dirname(path.resolve(opts.file)) : null;
   const sourceName = opts.file ? path.basename(opts.file) : "index.html";
-  const page = createPreviewHtml({
-    lottie: opts.lottie,
-    report: opts.report,
-    sourceUrl: `/source/${encodeURIComponent(sourceName)}`,
-    viewport: opts.viewport,
-    startOffsetMs: opts.startOffsetMs,
-    lottieScriptUrl: "/lottie.js",
-    animationUrl: "/animation.json",
-  });
-  const json = JSON.stringify(opts.lottie);
+  let version = 0;
+  let page = "";
+  let json = "";
+  let current: PreviewUpdate = opts;
+  const render = () => {
+    page = createPreviewHtml({
+      lottie: current.lottie,
+      report: current.report,
+      sourceUrl: `/source/${encodeURIComponent(sourceName)}`,
+      viewport: current.viewport ?? opts.viewport,
+      startOffsetMs: current.startOffsetMs,
+      lottieScriptUrl: "/lottie.js",
+      animationUrl: "/animation.json",
+      liveReloadUrl: opts.liveReload ? "/version" : undefined,
+    });
+    json = JSON.stringify(current.lottie);
+  };
+  render();
 
   const server = http.createServer(async (req, res) => {
     const url = new URL(req.url ?? "/", "http://localhost");
@@ -216,6 +247,7 @@ export async function startPreviewServer(opts: PreviewServerOptions): Promise<Pr
     try {
       if (url.pathname === "/") return send(200, "text/html; charset=utf-8", page);
       if (url.pathname === "/animation.json") return send(200, "application/json", json);
+      if (url.pathname === "/version") return send(200, "text/plain", String(version));
       if (url.pathname === "/lottie.js")
         return send(200, "text/javascript", await readFile(lottieWebPath()));
       if (url.pathname.startsWith("/source/")) {
@@ -250,6 +282,16 @@ export async function startPreviewServer(opts: PreviewServerOptions): Promise<Pr
   if (opts.open !== false) openInBrowser(url);
   return {
     url,
-    close: () => new Promise<void>((resolve) => server.close(() => resolve())),
+    update(next) {
+      current = { ...next, viewport: next.viewport ?? current.viewport };
+      version++;
+      render();
+    },
+    close: () =>
+      new Promise<void>((resolve) => {
+        // Live-reload polling keeps connections alive; drop them so close() resolves promptly.
+        server.closeAllConnections?.();
+        server.close(() => resolve());
+      }),
   };
 }
